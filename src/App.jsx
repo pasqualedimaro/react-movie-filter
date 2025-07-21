@@ -1,22 +1,39 @@
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import films from './data/ListFilm'
 
 function App() {
   const [film, setFilm] = useState(films)
-  console.log(films)
+  const[searchGenre, setSearchGenre] = useState ("")
+
+  useEffect(() => {
+    let newListFilm = films
+    if (searchGenre !== ""){
+      newListFilm = newListFilm.filter(films => films.genre === searchGenre);
+    }
+    setFilm(newListFilm)
+  }, [searchGenre]
+)
 
   return (
     <>
     <h1>Catalogo Film</h1>
     <section>
-      <h2>Cerca Articoli</h2>
+      <h2>Cerca Film</h2>
+      <select value= {searchGenre} onChange={e => setSearchGenre(e.target.value)}>
+        <option value="">Scegli il Genere</option> 
+        <option>Fantascienza</option>
+        <option>Thriller</option> 
+        <option>Romantico</option> 
+        <option>Azione</option> 
+      </select>
+      <h2>{searchGenre}</h2>
       <article>
-        <h2>Lista Articoli</h2>
+        <h2>Lista Film</h2>
         <ul>
-          {films.map((film, index) => (
+          {film.map((film, index) => (
             <li key= {index}>
-              <div>{film.genre}</div>
-              <div>{film.title}</div>
+              <div> Genere del film: {film.genre}</div>
+              <div> Titolo del film: {film.title}</div>
               <hr />
             </li>
           ))}
