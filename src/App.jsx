@@ -4,14 +4,18 @@ import films from './data/ListFilm'
 function App() {
   const [film, setFilm] = useState(films)
   const[searchGenre, setSearchGenre] = useState ("")
+  const [searchTitle, setSearchTitle] = useState ("")
 
   useEffect(() => {
     let newListFilm = films
     if (searchGenre !== ""){
       newListFilm = newListFilm.filter(films => films.genre === searchGenre);
     }
+    if (searchTitle){
+      newListFilm = newListFilm.filter(films => films.title.toLowerCase().includes(searchTitle.toLowerCase()));
+    }
     setFilm(newListFilm)
-  }, [searchGenre]
+  }, [searchGenre, searchTitle]
 )
 
   return (
@@ -19,6 +23,7 @@ function App() {
     <h1>Catalogo Film</h1>
     <section>
       <h2>Cerca Film</h2>
+      <input type="text" value={searchTitle} onChange={e => setSearchTitle(e.target.value)} />
       <select value= {searchGenre} onChange={e => setSearchGenre(e.target.value)}>
         <option value="">Scegli il Genere</option> 
         <option>Fantascienza</option>
